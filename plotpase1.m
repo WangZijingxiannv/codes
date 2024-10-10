@@ -1,3 +1,4 @@
+%% 
 % 数据
 N = [ 74477 119769 205329 238248 313987 434374 500373 608766 ];
 PostErr = [ 16.29073439141678 12.74470547262325 9.39811501304692 ...
@@ -34,3 +35,44 @@ ylim([min(PostErr) * 0.6, max(PostErr) * 1.4]); % 设置 y 轴范围
 legend('show');
 hold off;
 print('Lshaped_ratio', '-depsc');
+%% 
+% 数据
+nproc = [36 72 144 288];
+time = [431.10 179.31 96.53 53.81];
+
+% 创建图形窗口
+figure;
+
+
+% 画斜率为 -1 的对比线
+% 选择对比线的初始点
+nproc_ref = [36 288]; % 起点和终点
+time_ref = 0.76* time(1) * (nproc(1) ./ nproc_ref); % 保持起点处与 time 相同，斜率为 -1
+
+% 绘制对比线
+loglog(nproc_ref, time_ref, '-.', 'Color',[0.2, 0.4, 0.6], 'LineWidth', 2);
+hold on;
+% 画测试结果的线
+loglog(nproc, time, '-o', 'Color', [0.8, 0.2, 0.2],'LineWidth', 2);
+% hold on;
+
+
+% 添加图例
+legend('Slope = -1', 'Location', 'northeast');
+
+% 标注坐标轴
+xlabel('Number of Processors (nproc)', 'FontSize', 12);
+ylabel('Time (s)', 'FontSize', 12);
+title('Scalability Test Results', 'FontSize', 14);
+
+% 设置网格
+grid on;
+
+% 调整横轴和纵轴的范围，给图留出空白
+xlim([min(nproc)*0.8, max(nproc)*1.1]);
+ylim([min(time)*0.6, max(time)*1.1]);
+set(gca, 'XTick', nproc);
+set(gca, 'YTick', [100 200 300 400]);
+hold off;
+print('Lshaped_scaling', '-depsc');
+
